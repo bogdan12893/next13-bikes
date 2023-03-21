@@ -1,3 +1,4 @@
+import Navbar from "./components/layout/Navbar";
 import "./globals.css";
 import QueryWrapper from "./QueryWrapper";
 
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Navbar />
         <QueryWrapper>{children}</QueryWrapper>
       </body>
     </html>

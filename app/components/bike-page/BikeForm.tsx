@@ -1,15 +1,30 @@
 "use client";
 import axios from "axios";
 import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { BikeType } from "@/app/types/Bike";
 
+const fetchCategories = async () => {
+  const res = await axios.get(`/api/categories`);
+  return res.data;
+};
+
 export default function BikeForm() {
-  const [bike, setBike] = useState<BikeType>({ brand: "", type: "" });
+  const [bike, setBike] = useState<BikeType>({ brand: "", categories: [] });
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
+
+  const {
+    data: categories,
+    error,
+    isLoading,
+  } = useQuery<BikeType[]>({
+    queryFn: fetchCategories,
+    queryKey: ["categories"],
+  });
 
   const mutation = useMutation({
     mutationFn: (data: BikeType) => {
@@ -17,17 +32,24 @@ export default function BikeForm() {
     },
     onError: (error: Error | any) => {
       toast.error(error?.response?.data, { id: bikeToastId });
-      setBike({ brand: "", type: "" });
+      setBike({ brand: "", categories: [] });
       setIsDisabled(false);
     },
     onSuccess: (data) => {
       console.log(data);
       toast.success("Bike created successfully", { id: bikeToastId });
       queryCLient.invalidateQueries(["bikes"]);
-      setBike({ brand: "", type: "" });
+      setBike({ brand: "", categories: [] });
       setIsDisabled(false);
     },
   });
+  const handleCategories = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (bike.categories.includes(e.target.value)) {
+      return;
+    }
+    bike.categories.push(e.target.value);
+    setBike({ ...bike, categories: bike.categories });
+  };
 
   const submitBike = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,13 +69,20 @@ export default function BikeForm() {
           placeholder="brand"
           onChange={(e) => setBike({ ...bike, brand: e.target.value })}
         />
-        <input
+        <select
           className="mb-3"
-          type="text"
-          value={bike.type}
-          placeholder="type"
-          onChange={(e) => setBike({ ...bike, type: e.target.value })}
-        />
+          name="categories"
+          multiple
+          onChange={(e) => handleCategories(e)}
+        >
+          {categories?.map((category) => {
+            return (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            );
+          })}
+        </select>
         <button disabled={isDisabled}>Add bike</button>
       </form>
     </div>

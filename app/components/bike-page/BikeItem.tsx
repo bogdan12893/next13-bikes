@@ -6,7 +6,12 @@ import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-export default function BikeItem({ id, brand, type, createdAt }: BikeType) {
+export default function BikeItem({
+  id,
+  brand,
+  createdAt,
+  categories,
+}: BikeType) {
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
@@ -48,13 +53,18 @@ export default function BikeItem({ id, brand, type, createdAt }: BikeType) {
         <div>
           <h3>
             <Link
-              href={{ pathname: `/bike/${id}` }}
+              href={{ pathname: `/bikes/${id}` }}
               className="hover:underline"
             >
               Brand: {brand}
             </Link>
           </h3>
-          <h4>Type: {type}</h4>
+          <h4>Bike Categories:</h4>
+          {categories.length > 0
+            ? categories.map((cat) => {
+                return <span key={cat.id}>{cat.name} | </span>;
+              })
+            : "Missing category"}
         </div>
         <div>
           <p className="text-xs text-right">{createdDate()}</p>

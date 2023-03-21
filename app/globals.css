@@ -104,7 +104,8 @@ a {
   }
 }
 
-input {
+input,
+select {
   @apply block p-3 rounded-md bg-teal-900 border border-teal-400 w-full;
 }
 

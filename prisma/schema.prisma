@@ -8,9 +8,27 @@ datasource db {
 }
 
 model Bike {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  brand     String   @db.VarChar(255)
-  type      String?
+  id         String           @id @default(cuid())
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  brand      String           @db.VarChar(255)
+  categories BikeToCategory[]
+}
+
+model Category {
+  id        String           @id @default(cuid())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  name      String           @db.VarChar(255)
+  bikes     BikeToCategory[]
+}
+
+model BikeToCategory {
+  bike       Bike     @relation(fields: [bikeId], references: [id])
+  bikeId     String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+  assignedAt DateTime @default(now())
+
+  @@id([bikeId, categoryId])
 }
