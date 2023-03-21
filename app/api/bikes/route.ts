@@ -4,7 +4,11 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const data = await prisma.bike.findMany();
+    const data = await prisma.bike.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
     return NextResponse.json(data);
   } catch (error) {
     return new NextResponse("Error has occured while fetching the bikes", {

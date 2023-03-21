@@ -1,0 +1,15 @@
+export default function ComponentState({ error, isLoading }) {
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1>Error has occured while fetching data</h1>
+      </div>
+    );
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1>Loading...</h1>
+      </div>
+    );
+  return <span></span>;
+}

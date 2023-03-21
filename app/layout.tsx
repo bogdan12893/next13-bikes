@@ -1,4 +1,5 @@
 import "./globals.css";
+import QueryWrapper from "./QueryWrapper";
 
 export const metadata = {
   title: "Bikes App",
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <QueryWrapper>{children}</QueryWrapper>
+      </body>
     </html>
   );
 }

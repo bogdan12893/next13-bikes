@@ -90,13 +90,7 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-gray-600 text-white;
 }
 
 a {
@@ -111,9 +105,13 @@ a {
 }
 
 input {
-  @apply block p-3 m-2 rounded-md bg-teal-900 border border-teal-400;
+  @apply block p-3 rounded-md bg-teal-900 border border-teal-400 w-full;
 }
 
 button {
-  @apply p-3 m-2 rounded-md bg-purple-700 border border-t-purple-400;
+  @apply p-3 rounded-md bg-teal-600 border border-teal-400 disabled:opacity-25 w-full;
+}
+
+button.danger {
+  @apply flex justify-center items-center w-6 h-6 bg-red-600 border border-red-400;
 }

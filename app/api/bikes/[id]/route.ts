@@ -25,3 +25,22 @@ export async function GET(request: Request, { params }: ParamsType) {
     });
   }
 }
+
+export async function DELETE(request: Request, { params }: ParamsType) {
+  try {
+    const { id } = params;
+    const data = await prisma.bike.delete({
+      where: {
+        id: id,
+      },
+    });
+    if (!data) {
+      throw new Error();
+    }
+    return NextResponse.json(data);
+  } catch (error: any) {
+    return new NextResponse("Error has occured while deleting this bike", {
+      status: 403,
+    });
+  }
+}

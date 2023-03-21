@@ -1,18 +1,10 @@
 "use client";
 import axios from "axios";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-
-type BikeType = {
-  id?: string;
-  brand: string;
-  type: string;
-};
-
-const createBike = async (data: BikeType) => {
-  const res = await axios.post(`/api/bikes`, data);
-  return res.data;
-};
+import { useQuery } from "@tanstack/react-query";
+import BikeForm from "./components/bike-page/BikeForm";
+import { BikeType } from "./types/Bike";
+import BikeItem from "./components/bike-page/BikeItem";
+import ComponentState from "./components/ComponentState";
 
 const fetchBikes = async () => {
   const res = await axios.get(`/api/bikes`);
@@ -20,52 +12,26 @@ const fetchBikes = async () => {
 };
 
 export default function Home() {
-  const [bikes, setBikes] = useState<BikeType[]>([]);
-  const [bike, setBike] = useState<BikeType>({ brand: "", type: "" });
+  const { data, error, isLoading } = useQuery<BikeType[]>({
+    queryFn: fetchBikes,
+    queryKey: ["bikes"],
+  });
 
-  useEffect(() => {
-    fetchBikes().then((data) => {
-      setBikes(data);
-    });
-  }, []);
-
-  const submitBike = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await createBike(bike);
-  };
+  if (error || isLoading)
+    return <ComponentState error={error} isLoading={isLoading} />;
   return (
-    <main>
-      <div>
-        <h1>Create a bike</h1>
-        <form onSubmit={submitBike}>
-          <input
-            type="text"
-            value={bike.brand}
-            placeholder="brand"
-            onChange={(e) => setBike({ ...bike, brand: e.target.value })}
-          />
-          <input
-            type="text"
-            value={bike.type}
-            placeholder="type"
-            onChange={(e) => setBike({ ...bike, type: e.target.value })}
-          />
-          <button>submit</button>
-        </form>
+    <div className="flex flex-col items-center">
+      <BikeForm />
+      <div className="p-10 w-full">
+        <h2 className="font-bold text-xl mb-5 text-center">Bike List</h2>
+        <div className="flex flex-col items-center">
+          {data?.length < 1
+            ? "no bikes added"
+            : data?.map((bike) => {
+                return <BikeItem key={bike.id} {...bike} />;
+              })}
+        </div>
       </div>
-      <div>
-        <h2>Bike List</h2>
-      </div>
-      {bikes.map((bike) => {
-        return (
-          <Link key={bike.id} href={{ pathname: `/bike/${bike.id}` }}>
-            <div>
-              <h3>{bike.brand}</h3>
-              <h4>{bike.type}</h4>
-            </div>
-          </Link>
-        );
-      })}
-    </main>
+    </div>
   );
 }
