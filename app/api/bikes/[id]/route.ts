@@ -68,7 +68,10 @@ export async function PATCH(request: Request, { params }: ParamsType) {
     });
   }
 
-  console.log(res);
+  const categIds = res.categoriesId?.map((id: string) => ({ categoryId: id }));
+  const categs = res.categories.map((categ) => ({
+    categoryId: { equals: categ.id },
+  }));
 
   try {
     await prisma.bike.update({
@@ -79,10 +82,10 @@ export async function PATCH(request: Request, { params }: ParamsType) {
         brand: res.brand,
         categories: {
           createMany: {
-            data: [{ categoryId: "clfi6t17a000ww7kygidb5zqo" }],
+            data: categIds,
           },
           deleteMany: {
-            OR: [{ categoryId: { equals: "clfi1u2ku0002w7kyc1hqij5f" } }],
+            OR: categs,
           },
         },
       },

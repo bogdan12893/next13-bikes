@@ -13,6 +13,7 @@ const fetchCategories = async () => {
 
 export default function BikeForm({ editBike, bikeId }) {
   const [bike, setBike] = useState<BikeType>({ brand: "", categories: [] });
+  const [categoriesId, setCategoriesId] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
@@ -41,11 +42,12 @@ export default function BikeForm({ editBike, bikeId }) {
     },
   });
   const handleCategories = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (bike.categories.includes(e.target.value)) {
+    if (categoriesId.includes(e.target.value)) {
       return;
     }
-    bike.categories.push(e.target.value);
-    setBike({ ...bike, categories: bike.categories });
+    categoriesId.push(e.target.value);
+    setCategoriesId(categoriesId);
+    setBike({ ...bike, categoriesId: categoriesId });
   };
 
   const submitBike = async (e: React.FormEvent) => {
