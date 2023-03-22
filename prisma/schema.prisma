@@ -24,7 +24,7 @@ model Category {
 }
 
 model BikeToCategory {
-  bike       Bike     @relation(fields: [bikeId], references: [id])
+  bike       Bike     @relation(fields: [bikeId], references: [id], onDelete: Cascade)
   bikeId     String
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
