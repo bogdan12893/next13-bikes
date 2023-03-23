@@ -106,11 +106,15 @@ a {
 
 input,
 select {
-  @apply block p-3 rounded-md bg-teal-900 border border-teal-400 w-full;
+  @apply block p-3 rounded-md bg-teal-800 border border-teal-400 w-full focus:bg-teal-900 focus:outline-none focus:ring-[1px] focus:ring-teal-700;
 }
 
 button {
   @apply p-3 rounded-md bg-teal-600 border border-teal-400 disabled:opacity-25 w-full;
+}
+
+button[type="submit"] {
+  @apply bg-purple-600;
 }
 
 button.danger {

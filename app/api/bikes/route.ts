@@ -1,11 +1,25 @@
 import prisma from "../../../prisma/index";
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const queryData = request.nextUrl.searchParams;
+  const query = queryData.get("q");
+
+  if (typeof query !== "string") {
+    throw new Error("Invalid request");
+  }
+
   try {
     const data = await prisma.bike.findMany({
       orderBy: {
         createdAt: "desc",
+      },
+      where: {
+        brand: {
+          contains: query,
+          mode: "insensitive",
+        },
       },
       include: { categories: { include: { category: true } } },
     });

@@ -23,11 +23,18 @@ export default function CategoriesPage() {
       <CategoryForm />
       <div className="p-10 w-full">
         <h2 className="font-bold text-xl mb-5 text-center">Category List</h2>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-wrap justify-center">
           {data?.length < 1
             ? "no categories added"
             : data?.map((category) => {
-                return <p key={category.id}>{category.name}</p>;
+                return (
+                  <div
+                    key={category.id}
+                    className="bg-gray-500 m-3 p-3 rounded-lg"
+                  >
+                    <p>{category.name}</p>
+                  </div>
+                );
               })}
         </div>
       </div>
