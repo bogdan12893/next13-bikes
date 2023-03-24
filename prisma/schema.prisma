@@ -8,11 +8,13 @@ datasource db {
 }
 
 model Bike {
-  id         String           @id @default(cuid())
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
-  brand      String           @db.VarChar(255)
-  categories BikeToCategory[]
+  id          String           @id @default(cuid())
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  brand       String           @db.VarChar(255)
+  model       String
+  description String
+  categories  BikeToCategory[]
 }
 
 model Category {

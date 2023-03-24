@@ -105,6 +105,7 @@ a {
 }
 
 input,
+textarea,
 select {
   @apply block p-3 rounded-md bg-teal-800 border border-teal-400 w-full focus:bg-teal-900 focus:outline-none focus:ring-[1px] focus:ring-teal-700;
 }

@@ -16,10 +16,26 @@ export async function GET(request: NextRequest) {
         createdAt: "desc",
       },
       where: {
-        brand: {
-          contains: query,
-          mode: "insensitive",
-        },
+        OR: [
+          {
+            brand: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            model: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
       },
       include: { categories: { include: { category: true } } },
     });
@@ -52,6 +68,8 @@ export async function POST(request: Request) {
     await prisma.bike.create({
       data: {
         brand: requestBody.brand,
+        model: requestBody.model,
+        description: requestBody.description,
         categories: {
           create: requestBody.categories.map((category) => ({
             category: { connect: { id: category.id } },

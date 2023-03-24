@@ -13,7 +13,12 @@ const fetchCategories = async () => {
 };
 
 export default function BikeForm({ editBike, bikeId }) {
-  const [bike, setBike] = useState<BikeType>({ brand: "", categories: [] });
+  const [bike, setBike] = useState<BikeType>({
+    brand: "",
+    model: "",
+    description: "",
+    categories: [],
+  });
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
@@ -74,6 +79,21 @@ export default function BikeForm({ editBike, bikeId }) {
           value={bike.brand}
           placeholder="brand"
           onChange={(e) => setBike({ ...bike, brand: e.target.value })}
+        />
+
+        <input
+          className="mb-3"
+          type="text"
+          value={bike.model}
+          placeholder="model"
+          onChange={(e) => setBike({ ...bike, model: e.target.value })}
+        />
+
+        <textarea
+          className="mb-3"
+          value={bike.description}
+          placeholder="description"
+          onChange={(e) => setBike({ ...bike, description: e.target.value })}
         />
 
         <Multiselect

@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 export default function BikeItem({
   id,
   brand,
+  description,
+  model,
   createdAt,
   categories,
 }: BikeType) {
@@ -54,6 +56,8 @@ export default function BikeItem({
               Brand: {brand}
             </Link>
           </h3>
+          <h4 className="my-4 text-md">{model}</h4>
+          <p className="my-4 text-sm">{description}</p>
           <h4>Bike Categories:</h4>
           {categories.length > 0
             ? categories.map((cat) => {

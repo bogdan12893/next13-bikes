@@ -79,6 +79,8 @@ export async function PATCH(request: Request, { params }: ParamsType) {
       },
       data: {
         brand: requestBody.brand,
+        model: requestBody.model,
+        description: requestBody.description,
         categories: {
           deleteMany: {},
           create: categoriesToConnect || [],
