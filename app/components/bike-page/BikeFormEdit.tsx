@@ -50,14 +50,10 @@ export default function BikeForm({ editBike, bikeId }) {
     mutation.mutate(bike);
   };
 
-  const handleCateg = (categ) => {
-    const categoriesIds = categ.map((c) => c.id);
-    setBike({
-      ...bike,
-      categoriesIds: [...categoriesIds],
-      categories: [...categ],
-    });
-    setSelectedCategories([...categ]);
+  const handleCateg = (selectedIds) => {
+    const newSelectedCategories = categories.filter((c) => selectedIds.includes(c.id));
+    // TODO: Do stuff
+    setSelectedCategories(newSelectedCategories);
   };
 
   useEffect(() => {
@@ -80,7 +76,7 @@ export default function BikeForm({ editBike, bikeId }) {
     
         <Multiselect
           options={categories}
-          selectedOptions={selectedCategories}
+          selectedOptions={selectedCategories.map((c) => c.id)}
           onChange={handleCateg}
         />
 
