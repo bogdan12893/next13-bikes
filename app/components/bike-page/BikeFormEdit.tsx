@@ -62,6 +62,7 @@ export default function BikeForm({ editBike, bikeId }) {
 
   useEffect(() => {
     setBike({ ...editBike });
+    console.log(editBike.categories)
     setSelectedCategories(editBike.categories);
   }, [editBike]);
 
@@ -76,14 +77,10 @@ export default function BikeForm({ editBike, bikeId }) {
           placeholder="brand"
           onChange={(e) => setBike({ ...bike, brand: e.target.value })}
         />
-
-        <p>{JSON.stringify(selectedCategories)}</p>
-        <p>//////////////////////////////////////</p>
-        {/* <p>{JSON.stringify(categories)}</p> */}
-
+    
         <Multiselect
-          categories={categories}
-          selected={selectedCategories}
+          options={categories}
+          selectedOptions={selectedCategories}
           onChange={handleCateg}
         />
 
