@@ -66,16 +66,11 @@ export async function PATCH(request: Request, { params }: ParamsType) {
     return new NextResponse("Please add a brand name", {
       status: 403,
     });
-  }
+  } 
 
-  const categIds = res.categoriesId?.map((id: string) => ({
-    create: { id: id },
-    where: { id: id },
+  const categoriesToConnect = res.categoriesIds?.map((id: string) => ({
+    category: { connect: {id: id}}
   }));
-  // const categIds = res.categoriesId?.map((id: string) => ({ categoryId: id }));
-  // const categs = res.categories.map((categ) => ({
-  //   categoryId: { equals: categ.id },
-  // }));
 
   try {
     await prisma.bike.update({
@@ -85,20 +80,10 @@ export async function PATCH(request: Request, { params }: ParamsType) {
       data: {
         brand: res.brand,
         categories: {
-          connectOrCreate: categIds,
+          deleteMany: {},
+          create: categoriesToConnect || [],
         },
       },
-      // data: {
-      //   brand: res.brand,
-      //   categories: {
-      //     createMany: {
-      //       data: categIds,
-      //     },
-      //     deleteMany: {
-      //       OR: categs,
-      //     },
-      //   },
-      // },
       include: { categories: { include: { category: true } } },
     });
 

@@ -52,7 +52,11 @@ export default function BikeForm({ editBike, bikeId }) {
 
   const handleCateg = (selectedIds) => {
     const newSelectedCategories = categories.filter((c) => selectedIds.includes(c.id));
-    // TODO: Do stuff
+    setBike({
+      ...bike,
+      categoriesIds: selectedIds,
+      categories: newSelectedCategories,
+    });
     setSelectedCategories(newSelectedCategories);
   };
 
