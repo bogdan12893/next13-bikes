@@ -16,11 +16,6 @@ export default function BikeItem({
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
 
-  const createdDate = () => {
-    const date = new Date(createdAt);
-    return `${date.getDay()}.${date.getMonth()}.${date.getFullYear()}`;
-  };
-
   const mutation = useMutation({
     mutationFn: (id: string) => {
       setIsDisabled(true);
@@ -67,7 +62,7 @@ export default function BikeItem({
             : "Missing category"}
         </div>
         <div>
-          <p className="text-xs text-right">{createdDate()}</p>
+          <p className="text-xs text-right">{createdAt}</p>
         </div>
       </div>
     </div>

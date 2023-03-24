@@ -59,17 +59,17 @@ export async function DELETE(request: Request, { params }: ParamsType) {
 }
 
 export async function PATCH(request: Request, { params }: ParamsType) {
-  const res = await request.json();
+  const requestBody = await request.json();
   const { id } = params;
 
-  if (!res.brand.length) {
+  if (!requestBody.brand.length) {
     return new NextResponse("Please add a brand name", {
       status: 403,
     });
-  } 
+  }
 
-  const categoriesToConnect = res.categoriesIds?.map((id: string) => ({
-    category: { connect: {id: id}}
+  const categoriesToConnect = requestBody.categoriesIds?.map((id: string) => ({
+    category: { connect: { id: id } },
   }));
 
   try {
@@ -78,7 +78,7 @@ export async function PATCH(request: Request, { params }: ParamsType) {
         id: id,
       },
       data: {
-        brand: res.brand,
+        brand: requestBody.brand,
         categories: {
           deleteMany: {},
           create: categoriesToConnect || [],
@@ -87,7 +87,7 @@ export async function PATCH(request: Request, { params }: ParamsType) {
       include: { categories: { include: { category: true } } },
     });
 
-    return NextResponse.json(res);
+    return NextResponse.json(requestBody);
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       console.log("aici", error);

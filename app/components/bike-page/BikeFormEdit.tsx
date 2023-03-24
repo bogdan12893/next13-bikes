@@ -14,7 +14,6 @@ const fetchCategories = async () => {
 
 export default function BikeForm({ editBike, bikeId }) {
   const [bike, setBike] = useState<BikeType>({ brand: "", categories: [] });
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
@@ -51,19 +50,18 @@ export default function BikeForm({ editBike, bikeId }) {
   };
 
   const handleCateg = (selectedIds) => {
-    const newSelectedCategories = categories.filter((c) => selectedIds.includes(c.id));
+    const newSelectedCategories = categories.filter((c) =>
+      selectedIds.includes(c.id)
+    );
     setBike({
       ...bike,
       categoriesIds: selectedIds,
       categories: newSelectedCategories,
     });
-    setSelectedCategories(newSelectedCategories);
   };
 
   useEffect(() => {
     setBike({ ...editBike });
-    console.log(editBike.categories)
-    setSelectedCategories(editBike.categories);
   }, [editBike]);
 
   return (
@@ -77,10 +75,10 @@ export default function BikeForm({ editBike, bikeId }) {
           placeholder="brand"
           onChange={(e) => setBike({ ...bike, brand: e.target.value })}
         />
-    
+
         <Multiselect
           options={categories}
-          selectedOptions={selectedCategories.map((c) => c.id)}
+          selectedOptions={bike.categories.map((c) => c.id)}
           onChange={handleCateg}
         />
 
