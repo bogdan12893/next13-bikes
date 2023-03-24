@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { BikeType } from "@/app/types/Bike";
+import Multiselect from "./Multiselect";
 
 const fetchCategories = async () => {
   const res = await axios.get(`/api/categories`);
@@ -13,7 +14,7 @@ const fetchCategories = async () => {
 
 export default function BikeForm({ editBike, bikeId }) {
   const [bike, setBike] = useState<BikeType>({ brand: "", categories: [] });
-  const [categoriesId, setCategoriesId] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
@@ -41,14 +42,6 @@ export default function BikeForm({ editBike, bikeId }) {
       setIsDisabled(false);
     },
   });
-  const handleCategories = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (categoriesId.includes(e.target.value)) {
-      return;
-    }
-    categoriesId.push(e.target.value);
-    setCategoriesId(categoriesId);
-    setBike({ ...bike, categoriesId: categoriesId });
-  };
 
   const submitBike = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,8 +50,19 @@ export default function BikeForm({ editBike, bikeId }) {
     mutation.mutate(bike);
   };
 
+  const handleCateg = (categ) => {
+    const categoriesIds = categ.map((c) => c.id);
+    setBike({
+      ...bike,
+      categoriesIds: [...categoriesIds],
+      categories: [...categ],
+    });
+    setSelectedCategories([...categ]);
+  };
+
   useEffect(() => {
     setBike({ ...editBike });
+    setSelectedCategories(editBike.categories);
   }, [editBike]);
 
   return (
@@ -72,20 +76,17 @@ export default function BikeForm({ editBike, bikeId }) {
           placeholder="brand"
           onChange={(e) => setBike({ ...bike, brand: e.target.value })}
         />
-        <select
-          className="mb-3"
-          name="categories"
-          multiple
-          onChange={(e) => handleCategories(e)}
-        >
-          {categories?.map((category) => {
-            return (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            );
-          })}
-        </select>
+
+        <p>{JSON.stringify(selectedCategories)}</p>
+        <p>//////////////////////////////////////</p>
+        {/* <p>{JSON.stringify(categories)}</p> */}
+
+        <Multiselect
+          categories={categories}
+          selected={selectedCategories}
+          onChange={handleCateg}
+        />
+
         <button disabled={isDisabled}>Edit bike</button>
       </form>
     </div>

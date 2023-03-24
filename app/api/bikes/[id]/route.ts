@@ -68,10 +68,14 @@ export async function PATCH(request: Request, { params }: ParamsType) {
     });
   }
 
-  const categIds = res.categoriesId?.map((id: string) => ({ categoryId: id }));
-  const categs = res.categories.map((categ) => ({
-    categoryId: { equals: categ.id },
+  const categIds = res.categoriesId?.map((id: string) => ({
+    create: { id: id },
+    where: { id: id },
   }));
+  // const categIds = res.categoriesId?.map((id: string) => ({ categoryId: id }));
+  // const categs = res.categories.map((categ) => ({
+  //   categoryId: { equals: categ.id },
+  // }));
 
   try {
     await prisma.bike.update({
@@ -81,14 +85,20 @@ export async function PATCH(request: Request, { params }: ParamsType) {
       data: {
         brand: res.brand,
         categories: {
-          createMany: {
-            data: categIds,
-          },
-          deleteMany: {
-            OR: categs,
-          },
+          connectOrCreate: categIds,
         },
       },
+      // data: {
+      //   brand: res.brand,
+      //   categories: {
+      //     createMany: {
+      //       data: categIds,
+      //     },
+      //     deleteMany: {
+      //       OR: categs,
+      //     },
+      //   },
+      // },
       include: { categories: { include: { category: true } } },
     });
 

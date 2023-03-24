@@ -30,13 +30,8 @@ export default function BikePage({ params: { bikeId } }: URL) {
   if (error || isLoading)
     return <ComponentState error={error} isLoading={isLoading} />;
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center h-screen">
       <BikeFormEdit editBike={data} bikeId={bikeId} />
-      <p className="font-bold">CATEGORIES</p>
-      {data?.categories &&
-        data?.categories.map((category) => {
-          return <pre>{category.name}</pre>;
-        })}
     </div>
   );
 }
