@@ -1,12 +1,21 @@
 "use client";
 import { Listbox } from "@headlessui/react";
 
-export default function Multiselect({ options = [], selectedOptions = [], onChange }) {
+export default function Multiselect({
+  options = [],
+  selectedOptions = [],
+  onChange,
+}) {
   return (
     <Listbox value={selectedOptions} onChange={onChange} multiple>
       <div className="relative mt-1">
         <Listbox.Button>
-          {options.filter((option: any) => selectedOptions.includes(option.id)).map((item: any) => item.name).join(', ')}
+          {selectedOptions.length > 0
+            ? options
+                .filter((option: any) => selectedOptions.includes(option.id))
+                .map((item: any) => item.name)
+                .join(", ")
+            : "Select categories"}
         </Listbox.Button>
         <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-teal-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           {options?.map((option: any) => (

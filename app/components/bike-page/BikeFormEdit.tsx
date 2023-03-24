@@ -82,7 +82,9 @@ export default function BikeForm({ editBike, bikeId }) {
           onChange={handleCateg}
         />
 
-        <button disabled={isDisabled}>Edit bike</button>
+        <button disabled={isDisabled} className="mt-5">
+          Edit bike
+        </button>
       </form>
     </div>
   );

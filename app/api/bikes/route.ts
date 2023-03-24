@@ -40,9 +40,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
-  const res = await request.json();
+  const requestBody = await request.json();
 
-  if (!res.brand.length) {
+  if (!requestBody.brand.length) {
     return new NextResponse("Please add a brand name", {
       status: 403,
     });
@@ -51,15 +51,15 @@ export async function POST(request: Request) {
   try {
     await prisma.bike.create({
       data: {
-        brand: res.brand,
+        brand: requestBody.brand,
         categories: {
-          create: res.categories.map((id: string) => ({
-            category: { connect: { id } },
+          create: requestBody.categories.map((category) => ({
+            category: { connect: { id: category.id } },
           })),
         },
       },
     });
-    return NextResponse.json(res);
+    return NextResponse.json(requestBody);
   } catch (error) {
     return new NextResponse("Error has occured while creating a bike", {
       status: 500,
