@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 export default function BikeItem({
   id,
@@ -15,6 +16,8 @@ export default function BikeItem({
   categories,
   user,
 }: BikeType) {
+  const { data: session } = useSession();
+
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
@@ -40,13 +43,15 @@ export default function BikeItem({
     <div className="block w-full lg:w-1/2">
       <div className="bg-gray-700 p-5 mb-3 rounded-lg">
         <div className="flex justify-end">
-          <button
-            className="danger"
-            disabled={isDisabled}
-            onClick={() => mutation.mutate(id)}
-          >
-            ✕
-          </button>
+          {session?.user.id === user.id && (
+            <button
+              className="danger"
+              disabled={isDisabled}
+              onClick={() => mutation.mutate(id)}
+            >
+              ✕
+            </button>
+          )}
         </div>
         <div>
           <h3>
