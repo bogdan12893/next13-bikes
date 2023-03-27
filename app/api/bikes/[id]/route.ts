@@ -72,6 +72,17 @@ export async function PATCH(request: Request, { params }: ParamsType) {
     category: { connect: { id: id } },
   }));
 
+  const handleUpdateCategories = () => {
+    if (categoriesToConnect) {
+      return {
+        deleteMany: {},
+        create: categoriesToConnect || [],
+      };
+    } else {
+      return {};
+    }
+  };
+
   try {
     await prisma.bike.update({
       where: {
@@ -81,10 +92,7 @@ export async function PATCH(request: Request, { params }: ParamsType) {
         brand: requestBody.brand,
         model: requestBody.model,
         description: requestBody.description,
-        categories: {
-          deleteMany: {},
-          create: categoriesToConnect || [],
-        },
+        categories: handleUpdateCategories(),
       },
       include: { categories: { include: { category: true } } },
     });
