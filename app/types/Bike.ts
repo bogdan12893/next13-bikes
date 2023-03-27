@@ -5,4 +5,5 @@ export type BikeType = {
   description: string;
   categories: [];
   createdAt?: string;
+  user?: object;
 };

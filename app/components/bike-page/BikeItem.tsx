@@ -13,6 +13,7 @@ export default function BikeItem({
   model,
   createdAt,
   categories,
+  user,
 }: BikeType) {
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
@@ -65,7 +66,12 @@ export default function BikeItem({
               })
             : "Missing category"}
         </div>
-        <div>
+        <div className="flex justify-between mt-5">
+          {user && (
+            <p className="text-xs">
+              Created by: <strong>{user?.name}</strong>
+            </p>
+          )}
           <p className="text-xs text-right">{createdAt}</p>
         </div>
       </div>

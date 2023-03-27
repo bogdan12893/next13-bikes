@@ -12,6 +12,7 @@ model User {
   email    String  @unique
   password String
   name     String?
+  bikes    Bike[]
 }
 
 model Bike {
@@ -22,6 +23,8 @@ model Bike {
   model       String
   description String
   categories  BikeToCategory[]
+  user        User?            @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model Category {

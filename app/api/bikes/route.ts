@@ -1,6 +1,8 @@
+import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(request: NextRequest) {
   const queryData = request.nextUrl.searchParams;
@@ -37,7 +39,15 @@ export async function GET(request: NextRequest) {
           },
         ],
       },
-      include: { categories: { include: { category: true } } },
+      include: {
+        categories: { include: { category: true } },
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
 
     const formatData = data.map((bike) => {
@@ -58,6 +68,12 @@ export async function GET(request: NextRequest) {
 export async function POST(request: Request) {
   const requestBody = await request.json();
 
+  const session = await getServerSession(authOptions);
+
+  const user = await prisma.user.findUnique({
+    where: { id: session?.user.id },
+  });
+
   if (!requestBody.brand.length) {
     return new NextResponse("Please add a brand name", {
       status: 403,
@@ -70,6 +86,7 @@ export async function POST(request: Request) {
         brand: requestBody.brand,
         model: requestBody.model,
         description: requestBody.description,
+        userId: user.id,
         categories: {
           create: requestBody.categories.map((category) => ({
             category: { connect: { id: category.id } },

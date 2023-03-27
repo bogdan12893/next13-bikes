@@ -3,7 +3,6 @@ import Navbar from "./components/layout/Navbar";
 import "./globals.css";
 import QueryWrapper from "./QueryWrapper";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import { User } from "@prisma/client";
 
 export const metadata = {
   title: "Bikes App",
