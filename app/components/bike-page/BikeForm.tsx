@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { BikeType } from "@/app/types/Bike";
-import { Listbox } from "@headlessui/react";
 import Multiselect from "./Multiselect";
 
 const fetchCategories = async () => {

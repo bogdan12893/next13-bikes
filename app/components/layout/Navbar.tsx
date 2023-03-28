@@ -20,9 +20,12 @@ export default function Navbar({ session }) {
       </ul>
       <div>
         {!session ? (
-          <button className="w-28 mr-3" onClick={() => signIn()}>
-            Sign in
-          </button>
+          <div>
+            <Link href="/register">Register</Link>
+            <button className="w-28 ml-3" onClick={() => signIn()}>
+              Sign in
+            </button>
+          </div>
         ) : (
           <div className="flex items-center">
             <p>Hello, {session.user.name}!</p>

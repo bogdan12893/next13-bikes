@@ -70,6 +70,12 @@ export async function POST(request: Request) {
 
   const session = await getServerSession(authOptions);
 
+  if (!session) {
+    return new NextResponse("Login to create your bike! ", {
+      status: 401,
+    });
+  }
+
   const user = await prisma.user.findUnique({
     where: { id: session?.user.id },
   });

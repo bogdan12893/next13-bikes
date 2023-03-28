@@ -27,8 +27,8 @@ export default function ProfileInfo({ session }) {
           </div>
           <h2 className="font-bold text-xl mb-5 text-center">My bikes</h2>
           <div className="flex flex-col items-center">
-            {data?.length < 1
-              ? "You have no bikes yet"
+            {data?.bikes.length < 1
+              ? "You have no bikes added yet 🙃"
               : data?.bikes.map((bike) => {
                   return <BikeItem key={bike.id} {...bike} />;
                 })}

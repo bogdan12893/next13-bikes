@@ -1,5 +1,7 @@
+import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index";
 import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET() {
   try {
@@ -18,6 +20,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const res = await request.json();
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new NextResponse("Login to create a category! ", {
+      status: 401,
+    });
+  }
 
   if (!res.name.length) {
     return new NextResponse("Please add a name", {
