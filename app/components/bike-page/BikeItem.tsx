@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import moment from "moment";
 
 export default function BikeItem({
   id,
@@ -77,7 +78,7 @@ export default function BikeItem({
               Created by: <strong>{user?.name}</strong>
             </p>
           )}
-          <p className="text-xs text-right">{createdAt}</p>
+          <p className="text-xs text-right">{moment(createdAt).fromNow()}</p>
         </div>
       </div>
     </div>

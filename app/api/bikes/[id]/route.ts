@@ -17,7 +17,17 @@ export async function GET(request: Request, { params }: ParamsType) {
       where: {
         id: id,
       },
-      include: { categories: { include: { category: true } } },
+      include: {
+        categories: { include: { category: true } },
+        comments: {
+          select: {
+            id: true,
+            text: true,
+            createdAt: true,
+            user: { select: { name: true } },
+          },
+        },
+      },
     });
 
     const formatData = {

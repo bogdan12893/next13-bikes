@@ -5,10 +5,17 @@ import ComponentState from "@/app/components/ComponentState";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import CommentForm from "@/app/components/bike-page/CommentForm";
+import CommentsList from "@/app/components/bike-page/CommentsList";
 
 type CategoryType = {
   id?: string;
   name: string;
+};
+
+type CommentType = {
+  id?: string;
+  text: string;
 };
 
 type BikeType = {
@@ -19,6 +26,7 @@ type BikeType = {
   description: string;
   userId?: string;
   categories: CategoryType[];
+  comments: CommentType[];
 };
 
 type URL = {
@@ -42,7 +50,7 @@ export default function BikePage({ params: { bikeId } }: URL) {
     return <ComponentState error={error} isLoading={isLoading} />;
   return (
     <div className="flex flex-col items-center h-screen">
-      <div className="bg-teal-600 w-full p-5 lg:w-1/2 mt-5 rounded-lg relative">
+      <div className="bg-teal-600 w-full p-5 lg:w-1/2 mt-5 rounded-t-lg relative">
         {data?.userId === session?.user.id && (
           <Link
             href={`/bikes/${bikeId}/edit`}
@@ -74,6 +82,8 @@ export default function BikePage({ params: { bikeId } }: URL) {
           )}
         </div>
       </div>
+      <CommentsList comments={data?.comments} />
+      <CommentForm bikeId={bikeId} />
     </div>
   );
 }
