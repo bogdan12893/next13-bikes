@@ -14,7 +14,13 @@ export async function GET(request: NextRequest) {
       where: { id: user.id },
       include: {
         bikes: {
-          include: { categories: { include: { category: true } } },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            categories: { include: { category: true } },
+            comments: true,
+          },
         },
       },
     });
@@ -25,6 +31,7 @@ export async function GET(request: NextRequest) {
         return {
           ...bike,
           categories: bike.categories.map((categ) => categ.category),
+          comments: bike.comments.length,
         };
       }),
     };

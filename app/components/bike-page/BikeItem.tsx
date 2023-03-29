@@ -16,6 +16,7 @@ export default function BikeItem({
   createdAt,
   categories,
   user,
+  comments,
 }: BikeType) {
   const { data: session } = useSession();
 
@@ -72,7 +73,8 @@ export default function BikeItem({
               })
             : "Missing category"}
         </div>
-        <div className="flex justify-between mt-5">
+        <p className="mt-5 text-xs">Comments: {comments}</p>
+        <div className="flex justify-between mt-2">
           {user && (
             <p className="text-xs">
               Created by: <strong>{user?.name}</strong>

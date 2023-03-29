@@ -3,6 +3,7 @@ import prisma from "../../../prisma/index";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
+import { count } from "console";
 
 export async function GET(request: NextRequest) {
   const queryData = request.nextUrl.searchParams;
@@ -41,6 +42,7 @@ export async function GET(request: NextRequest) {
       },
       include: {
         categories: { include: { category: true } },
+        comments: true,
         user: {
           select: {
             id: true,
@@ -54,6 +56,7 @@ export async function GET(request: NextRequest) {
       return {
         ...bike,
         categories: bike.categories.map((categ) => categ.category),
+        comments: bike.comments.length,
       };
     });
 
