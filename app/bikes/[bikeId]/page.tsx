@@ -1,14 +1,24 @@
 "use client";
-import BikeFormEdit from "@/app/components/bike-page/BikeFormEdit";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import ComponentState from "@/app/components/ComponentState";
+import Image from "next/image";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+
+type CategoryType = {
+  id?: string;
+  name: string;
+};
 
 type BikeType = {
   id?: string;
   brand: string;
   type: string;
+  model: string;
+  description: string;
+  userId?: string;
+  categories: CategoryType[];
 };
 
 type URL = {
@@ -27,11 +37,43 @@ export default function BikePage({ params: { bikeId } }: URL) {
     queryFn: () => fetchBike(bikeId),
     queryKey: ["bike"],
   });
+  const { data: session } = useSession();
   if (error || isLoading)
     return <ComponentState error={error} isLoading={isLoading} />;
   return (
     <div className="flex flex-col items-center h-screen">
-      <BikeFormEdit editBike={data} bikeId={bikeId} />
+      <div className="bg-teal-600 w-full p-5 lg:w-1/2 mt-5 rounded-lg relative">
+        {data?.userId === session?.user.id && (
+          <Link
+            href={`/bikes/${bikeId}/edit`}
+            className="absolute inline-block bg-teal-400 rounded-lg right-1 top-1 hover:shadow-md hover:bg-teal-300 transition-all duration-300"
+          >
+            <Image
+              src="/svg/edit-pencil.svg"
+              alt="edit pencil"
+              width={30}
+              height={30}
+            />
+          </Link>
+        )}
+        <h1 className="text-xl font-bold">{data?.model}</h1>
+        <h2>Brand: {data?.brand}</h2>
+        <p>Info: {data?.description}</p>
+        <div className="flex flex-wrap my-4">
+          {data?.categories.length > 0 ? (
+            data?.categories.map((categ: CategoryType) => (
+              <div
+                key={categ.id}
+                className=" bg-slate-500 py-1 px-2 mr-1 mb-1 rounded-md"
+              >
+                {categ.name}
+              </div>
+            ))
+          ) : (
+            <div>no categories added</div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

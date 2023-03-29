@@ -81,6 +81,12 @@ export async function PATCH(request: Request, { params }: ParamsType) {
   const requestBody = await request.json();
   const { id } = params;
 
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new NextResponse("Login to edit a bike", { status: 401 });
+  }
+
   if (!requestBody.brand.length) {
     return new NextResponse("Please add a brand name", {
       status: 403,
@@ -103,6 +109,19 @@ export async function PATCH(request: Request, { params }: ParamsType) {
   };
 
   try {
+    const findBike = await prisma.bike.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (findBike?.userId !== session.user.id) {
+      return new NextResponse(
+        "This is not your bike. You can't edit this bike.",
+        { status: 401 }
+      );
+    }
+
     await prisma.bike.update({
       where: {
         id: id,
