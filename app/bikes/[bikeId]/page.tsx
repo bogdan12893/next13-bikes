@@ -1,4 +1,5 @@
 "use client";
+
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import ComponentState from "@/app/components/ComponentState";
