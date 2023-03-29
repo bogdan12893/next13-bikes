@@ -32,7 +32,7 @@ export async function GET(request: Request, { params }: ParamsType) {
 
     const formatData = {
       ...data,
-      categories: data.categories.map((categ) => categ.category),
+      categories: data?.categories.map((categ) => categ.category),
     };
 
     if (!data) {
