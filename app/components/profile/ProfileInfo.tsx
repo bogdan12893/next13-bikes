@@ -14,6 +14,7 @@ export default function ProfileInfo({ session }) {
     queryFn: () => fetchUserBikes(session.user.id),
     queryKey: ["userBikes"],
   });
+
   return (
     <div className="p-10 w-full">
       {error || isLoading ? (
@@ -30,7 +31,7 @@ export default function ProfileInfo({ session }) {
             {data?.bikes.length < 1
               ? "You have no bikes added yet 🙃"
               : data?.bikes.map((bike) => {
-                  return <BikeItem key={bike.id} {...bike} />;
+                  return <BikeItem key={bike.id} {...bike} user={data} />;
                 })}
           </div>
         </>

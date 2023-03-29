@@ -34,7 +34,7 @@ export default function BikeItem({
     },
     onSuccess: (data) => {
       toast.success("Bike created successfully", { id: bikeToastId });
-      queryCLient.invalidateQueries(["bikes"]);
+      queryCLient.invalidateQueries(["userBikes"]);
       setIsDisabled(false);
     },
   });
@@ -43,7 +43,7 @@ export default function BikeItem({
     <div className="block w-full lg:w-1/2">
       <div className="bg-gray-700 p-5 mb-3 rounded-lg">
         <div className="flex justify-end">
-          {session?.user.id === user.id && (
+          {session?.user.id === user?.id && (
             <button
               className="danger"
               disabled={isDisabled}

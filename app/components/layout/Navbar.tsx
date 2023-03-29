@@ -4,7 +4,7 @@ import { signIn, signOut } from "next-auth/react";
 
 export default function Navbar({ session }) {
   return (
-    <nav className=" bg-teal-800 p-4 flex justify-between items-center">
+    <nav className="bg-teal-800 p-4 flex justify-between items-center">
       <ul className="flex justify-center">
         <li className="mr-4">
           <Link href="/">Home</Link>
@@ -21,7 +21,9 @@ export default function Navbar({ session }) {
       <div>
         {!session ? (
           <div>
-            <Link href="/register">Register</Link>
+            <Link href="/register" className="hover:underline">
+              Register
+            </Link>
             <button className="w-28 ml-3" onClick={() => signIn()}>
               Sign in
             </button>
