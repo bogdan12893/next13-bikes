@@ -62,7 +62,7 @@ export async function DELETE(request: Request, { params }: ParamsType) {
       },
     });
 
-    if (findBike?.userId !== session.user.id) {
+    if (findBike?.userId !== session?.user?.id) {
       return new NextResponse(
         "This is not your bike. You can't delete this bike.",
         { status: 401 }
@@ -125,7 +125,7 @@ export async function PATCH(request: Request, { params }: ParamsType) {
       },
     });
 
-    if (findBike?.userId !== session.user.id) {
+    if (findBike?.userId !== session?.user?.id) {
       return new NextResponse(
         "This is not your bike. You can't edit this bike.",
         { status: 401 }
