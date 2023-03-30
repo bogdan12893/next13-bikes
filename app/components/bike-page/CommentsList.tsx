@@ -1,5 +1,5 @@
 "use client";
-import moment from "moment";
+import CommentItem from "./CommentItem";
 
 export default function CommentsList({ comments }) {
   return (
@@ -8,17 +8,7 @@ export default function CommentsList({ comments }) {
       {comments.length > 0 ? (
         <div>
           {comments.map((comment) => {
-            return (
-              <div
-                key={comment.id}
-                className=" bg-teal-600 p-5 mb-2 rounded-lg"
-              >
-                <p>{comment.text}</p>
-                <p className="text-xs text-right">
-                  {moment(comment.createdAt).fromNow()} by {comment.user.name}
-                </p>
-              </div>
-            );
+            return <CommentItem key={comment.id} comment={comment} />;
           })}
         </div>
       ) : (

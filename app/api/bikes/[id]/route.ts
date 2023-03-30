@@ -20,10 +20,15 @@ export async function GET(request: Request, { params }: ParamsType) {
       include: {
         categories: { include: { category: true } },
         comments: {
+          orderBy: {
+            createdAt: "asc",
+          },
           select: {
             id: true,
             text: true,
             createdAt: true,
+            updatedAt: true,
+            userId: true,
             user: { select: { name: true } },
           },
         },
@@ -147,9 +152,6 @@ export async function PATCH(request: Request, { params }: ParamsType) {
 
     return NextResponse.json(requestBody);
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      console.log("aici", error);
-    }
     return new NextResponse("Error has occured while editing a bike", {
       status: 500,
     });

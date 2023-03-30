@@ -34,3 +34,51 @@ export async function POST(request: Request) {
     });
   }
 }
+
+export async function PATCH(request: Request) {
+  const requestBody = await request.json();
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new NextResponse("Login to edit a comment", { status: 401 });
+  }
+
+  if (!requestBody.text.length) {
+    return new NextResponse("Comment cannot be empty", {
+      status: 403,
+    });
+  }
+
+  try {
+    const findComment = await prisma.comment.findUnique({
+      where: {
+        id: requestBody.id,
+      },
+    });
+
+    console.log(findComment);
+
+    if (findComment?.userId !== session.user.id) {
+      return new NextResponse(
+        "This is not your comment. You can't edit this comment.",
+        { status: 401 }
+      );
+    }
+
+    await prisma.comment.update({
+      where: {
+        id: requestBody.id,
+      },
+      data: {
+        text: requestBody.text,
+      },
+    });
+
+    return NextResponse.json(requestBody);
+  } catch (error) {
+    return new NextResponse("Error has occured while editing a bike", {
+      status: 500,
+    });
+  }
+}

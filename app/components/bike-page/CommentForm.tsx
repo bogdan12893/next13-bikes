@@ -8,7 +8,7 @@ export default function CommentForm({ bikeId }) {
   const [comment, setComment] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();
-  let commToastId: string = "bikeToast";
+  let commToastId: string = "commToast";
 
   const mutation = useMutation({
     mutationFn: (data) => {
