@@ -22,7 +22,7 @@ export default function CommentItem({ comment }) {
       ? `(edited: ${moment(comment.updatedAt).fromNow()})`
       : false;
 
-  const mutation = useMutation({
+  const mutationUpdate = useMutation({
     mutationFn: (data) => {
       return axios.patch(`/api/comments`, { ...comment, text: editComment });
     },
@@ -39,24 +39,54 @@ export default function CommentItem({ comment }) {
     },
   });
 
+  const mutationDelete = useMutation({
+    mutationFn: () => {
+      return axios.delete(`/api/comments`, { data: comment });
+    },
+    onError: (error: Error | any) => {
+      toast.error(error?.response?.data, { id: commToastId });
+      setIsDisabled(false);
+    },
+    onSuccess: (data) => {
+      toast.success("Comment deleted successfully", { id: commToastId });
+      queryCLient.invalidateQueries(["bike"]);
+      setIsDisabled(false);
+    },
+  });
+
+  const deleteComment = (comment) => {
+    setIsDisabled(true);
+    toast.loading("Deleting your comment", { id: commToastId });
+    mutationDelete.mutate(comment);
+  };
+
   const updateComment = (e: React.FormEvent) => {
     e.preventDefault();
     setIsDisabled(true);
     toast.loading("Updating your comment", { id: commToastId });
-    mutation.mutate(comment);
+    mutationUpdate.mutate(comment);
   };
 
   return (
     <div className=" bg-teal-600 p-7 mb-2 rounded-lg relative">
       {comment?.userId === session?.user.id && (
-        <button
-          onClick={() => {
-            setIsEdit(!isEdit);
-          }}
-          className="absolute w-auto p-0 bg-teal-400 rounded-lg right-1 top-1 hover:shadow-md hover:bg-teal-300 transition-all duration-300"
-        >
-          <Image src={handleIcon} alt="action icon" width={20} height={20} />
-        </button>
+        <div>
+          <button
+            onClick={() => {
+              setIsEdit(!isEdit);
+            }}
+            className="absolute w-auto p-0 bg-teal-400 rounded-lg right-1 top-1 hover:shadow-md hover:bg-teal-300 transition-all duration-300"
+          >
+            <Image src={handleIcon} alt="action icon" width={20} height={20} />
+          </button>
+          <button
+            className="danger absolute -left-2 -top-2 p-0"
+            disabled={isDisabled}
+            onClick={() => deleteComment(comment)}
+          >
+            ✕
+          </button>
+        </div>
       )}
 
       {isEdit ? (

@@ -82,3 +82,36 @@ export async function PATCH(request: Request) {
     });
   }
 }
+
+export async function DELETE(request: Request) {
+  const requestBody = await request.json();
+
+  console.log(requestBody);
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new NextResponse("Login to delete a comment", { status: 401 });
+  }
+
+  try {
+    const { id, userId } = requestBody;
+
+    if (userId !== session.user.id) {
+      return new NextResponse(
+        "This is not your comment. You can't delete this comment.",
+        { status: 401 }
+      );
+    }
+
+    const data = await prisma.comment.delete({
+      where: { id },
+    });
+
+    return NextResponse.json(data);
+  } catch (error: any) {
+    return new NextResponse("Error has occured while deleting this bike", {
+      status: 403,
+    });
+  }
+}
