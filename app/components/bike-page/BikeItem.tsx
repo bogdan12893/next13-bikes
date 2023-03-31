@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import moment from "moment";
+import Like from "./Like";
 
 export default function BikeItem({
   id,
@@ -17,6 +18,8 @@ export default function BikeItem({
   categories,
   user,
   comments,
+  _count,
+  likes,
 }: BikeType) {
   const { data: session } = useSession();
 
@@ -24,7 +27,7 @@ export default function BikeItem({
   const queryCLient = useQueryClient();
   let bikeToastId: string = "bikeToast";
 
-  const mutation = useMutation({
+  const mutationDelete = useMutation({
     mutationFn: (id: string) => {
       setIsDisabled(true);
       toast.loading("Deleting bike...", { id: bikeToastId });
@@ -37,6 +40,7 @@ export default function BikeItem({
     onSuccess: (data) => {
       toast.success("Bike created successfully", { id: bikeToastId });
       queryCLient.invalidateQueries(["userBikes"]);
+      queryCLient.invalidateQueries(["bikes"]);
       setIsDisabled(false);
     },
   });
@@ -49,7 +53,7 @@ export default function BikeItem({
             <button
               className="danger"
               disabled={isDisabled}
-              onClick={() => mutation.mutate(id)}
+              onClick={() => mutationDelete.mutate(id)}
             >
               ✕
             </button>
@@ -73,7 +77,6 @@ export default function BikeItem({
               })
             : "Missing category"}
         </div>
-        <p className="mt-5 text-xs">Comments: {comments}</p>
         <div className="flex justify-between mt-2">
           {user && (
             <p className="text-xs">
@@ -81,6 +84,10 @@ export default function BikeItem({
             </p>
           )}
           <p className="text-xs text-right">{moment(createdAt).fromNow()}</p>
+        </div>
+        <div className="flex flex-wrap items-center justify-between bg-slate-600 p-2 rounded-lg mt-3">
+          <p className="text-xs">Comments: {comments}</p>
+          <Like id={id} count={_count} likes={likes} />
         </div>
       </div>
     </div>

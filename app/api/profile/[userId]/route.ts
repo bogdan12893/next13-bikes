@@ -18,6 +18,10 @@ export async function GET(request: NextRequest) {
             createdAt: "desc",
           },
           include: {
+            _count: {
+              select: { likes: true },
+            },
+            likes: true,
             categories: { include: { category: true } },
             comments: true,
           },

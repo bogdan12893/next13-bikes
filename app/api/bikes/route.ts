@@ -41,8 +41,12 @@ export async function GET(request: NextRequest) {
         ],
       },
       include: {
+        _count: {
+          select: { likes: true },
+        },
         categories: { include: { category: true } },
         comments: true,
+        likes: true,
         user: {
           select: {
             id: true,
