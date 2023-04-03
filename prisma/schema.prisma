@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  password String
-  name     String?
-  bikes    Bike[]
-  comments Comment[]
-  likes    Like[]
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String?
+  confirmed Boolean   @default(false)
+  bikes     Bike[]
+  comments  Comment[]
+  likes     Like[]
 }
 
 model Bike {
