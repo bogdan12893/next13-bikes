@@ -14,10 +14,10 @@ export async function POST(request: Request) {
 
   try {
     const token = jwt.sign({ email }, process.env.NEXTAUTH_SECRET, {
-      expiresIn: "20000",
+      expiresIn: "1d",
     });
 
-    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/email-verification?token=${token}`;
+    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}`;
 
     await transporter.sendMail({
       ...mailOptions,
