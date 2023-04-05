@@ -55,7 +55,7 @@ export default function RegisterForm() {
         />
         <input
           className="mb-3"
-          type="text"
+          type="email"
           value={userData.email}
           placeholder="email"
           onChange={(e) => setUserData({ ...userData, email: e.target.value })}

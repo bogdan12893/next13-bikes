@@ -80,7 +80,7 @@ export default function RegisterForm() {
       <form onSubmit={handleLogin}>
         <input
           className="mb-3"
-          type="text"
+          type="email"
           value={userData.email}
           placeholder="email"
           onChange={(e) => setUserData({ ...userData, email: e.target.value })}
@@ -112,6 +112,9 @@ export default function RegisterForm() {
         <button type="submit" disabled={isDisabled}>
           Login
         </button>
+        <Link href="/forgot-password" className="text-xs hover:underline">
+          Forgot password?
+        </Link>
         <p className="mt-5 text-sm text-right">
           New here? Go{" "}
           <Link
