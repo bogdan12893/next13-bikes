@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-export default function CommentForm({ bikeId }) {
+export default function CommentForm({ bikeId }: { bikeId: string }) {
   const [comment, setComment] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const queryCLient = useQueryClient();

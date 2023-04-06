@@ -1,4 +1,9 @@
-export default function ComponentState({ error, isLoading }) {
+type StateProps = {
+  error: any;
+  isLoading: boolean;
+};
+
+export default function ComponentState({ error, isLoading }: StateProps) {
   if (error)
     return (
       <div className="flex justify-center items-center h-100">

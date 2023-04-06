@@ -24,7 +24,7 @@ export default function Categories() {
       <div className="p-10 w-full">
         <h2 className="font-bold text-xl mb-5 text-center">Category List</h2>
         <div className="flex flex-wrap justify-center">
-          {data?.length < 1
+          {data && data?.length < 1
             ? "no categories added"
             : data?.map((category) => {
                 return (

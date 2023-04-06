@@ -8,16 +8,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import CommentForm from "@/app/components/bike-page/CommentForm";
 import CommentsList from "@/app/components/bike-page/CommentsList";
-
-type CategoryType = {
-  id?: string;
-  name: string;
-};
-
-type CommentType = {
-  id?: string;
-  text: string;
-};
+import { Category, Comment } from "@prisma/client";
 
 type BikeType = {
   id?: string;
@@ -26,8 +17,8 @@ type BikeType = {
   model: string;
   description: string;
   userId?: string;
-  categories: CategoryType[];
-  comments: CommentType[];
+  categories: Category[];
+  comments: Comment[];
 };
 
 type URL = {
@@ -69,8 +60,8 @@ export default function BikePage({ params: { bikeId } }: URL) {
         <h2>Brand: {data?.brand}</h2>
         <p>Info: {data?.description}</p>
         <div className="flex flex-wrap my-4">
-          {data?.categories.length > 0 ? (
-            data?.categories.map((categ: CategoryType) => (
+          {data?.categories && data?.categories?.length > 0 ? (
+            data?.categories.map((categ: Category) => (
               <div
                 key={categ.id}
                 className=" bg-slate-500 py-1 px-2 mr-1 mb-1 rounded-md"
