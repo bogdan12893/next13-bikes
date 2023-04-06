@@ -29,6 +29,12 @@ export async function POST(request: Request) {
     });
   }
 
+  if (session.user.role !== "ADMIN") {
+    return new NextResponse("Only admins can perform this action! ", {
+      status: 401,
+    });
+  }
+
   if (!res.name.length) {
     return new NextResponse("Please add a name", {
       status: 403,
