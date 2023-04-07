@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { signIn, signOut } from "next-auth/react";
-import { User } from "@prisma/client";
 
 export default function Navbar({ session }) {
   return (
@@ -10,7 +9,7 @@ export default function Navbar({ session }) {
         <li className="mr-4">
           <Link href="/">Home</Link>
         </li>
-        {session.user.role === "ADMIN" && (
+        {session?.user?.role === "ADMIN" && (
           <li className="mr-4">
             <Link href="/categories">Categories</Link>
           </li>
