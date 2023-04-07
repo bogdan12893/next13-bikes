@@ -2,7 +2,8 @@ import { getServerSession } from "next-auth";
 import Navbar from "./components/layout/Navbar";
 import "./globals.css";
 import QueryWrapper from "./QueryWrapper";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+// import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
 
 export const metadata = {
   title: "Bikes App",
