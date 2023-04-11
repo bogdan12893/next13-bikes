@@ -7,7 +7,7 @@ export default function SuccessPage() {
         <h1 className="text-xl font-bold">You are now a PRO rider! 🤙🏻</h1>
         <p className="my-2">Thank you for upgrading</p>
         <Link href="/" className="underline hover:shadow-xl">
-          Let's add more bikes!
+          Let&apos;s add more bikes!
         </Link>
       </div>
     </div>
