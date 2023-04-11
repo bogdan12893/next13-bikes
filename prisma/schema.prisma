@@ -12,13 +12,20 @@ enum Role {
   ADMIN
 }
 
+enum AccountType {
+  STARTER
+  PRO
+}
+
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
+  id        String      @id @default(cuid())
+  stripeId  String      @unique
+  email     String      @unique
   password  String
   name      String?
-  confirmed Boolean   @default(false)
-  role      Role      @default(USER)
+  confirmed Boolean     @default(false)
+  role      Role        @default(USER)
+  riderType AccountType @default(STARTER)
   bikes     Bike[]
   comments  Comment[]
   likes     Like[]

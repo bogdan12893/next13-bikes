@@ -3,9 +3,13 @@ import prisma from "@/prisma";
 import jwt from "jsonwebtoken";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 
 export async function POST(request: Request) {
   const { name, email, password } = await request.json();
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2022-11-15",
+  });
 
   if (!name.length || !email.length || !password.length) {
     return new NextResponse("All fields are required ⛔️", {
@@ -16,8 +20,10 @@ export async function POST(request: Request) {
   const hashed = await hash(password, 12);
 
   try {
+    const customer: Stripe.Customer = await stripe.customers.create({ email });
     await prisma.user.create({
       data: {
+        stripeId: customer.id,
         name,
         email,
         password: hashed,

@@ -8,6 +8,10 @@ const nextConfig = {
     //TO DO: need to fix this
     ignoreBuildErrors: true,
   },
+
+  env: {
+    STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
+  },
 };
 
 module.exports = nextConfig;

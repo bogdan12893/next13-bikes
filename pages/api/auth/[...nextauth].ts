@@ -52,6 +52,8 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          stripeId: user.stripeId,
+          riderType: user.riderType,
         };
       },
     }),
@@ -63,7 +65,9 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
+          stripeId: token.stripeId,
           role: token.role,
+          riderType: token.riderType,
         },
       };
     },
@@ -74,6 +78,8 @@ export const authOptions: NextAuthOptions = {
           ...token,
           role: u.role,
           id: u.id,
+          stripeId: u.stripeId,
+          riderType: u.riderType,
         };
       }
       return token;
