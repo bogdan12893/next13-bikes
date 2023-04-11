@@ -85,11 +85,22 @@ export async function POST(request: Request) {
 
   const user = await prisma.user.findUnique({
     where: { id: session?.user.id },
+    include: {
+      _count: {
+        select: { bikes: true },
+      },
+    },
   });
 
   if (!requestBody.brand.length) {
     return new NextResponse("Please add a brand name", {
       status: 403,
+    });
+  }
+
+  if (user?.riderType === "STARTER" && user?._count?.bikes > 1) {
+    return new NextResponse("Please upgrade your account to add more bikes.", {
+      status: 401,
     });
   }
 
@@ -99,7 +110,7 @@ export async function POST(request: Request) {
         brand: requestBody.brand,
         model: requestBody.model,
         description: requestBody.description,
-        userId: user.id,
+        userId: user?.id,
         categories: {
           create: requestBody.categories.map((category) => ({
             category: { connect: { id: category.id } },

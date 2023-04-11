@@ -23,6 +23,9 @@ export default function ProfileInfo({ session }) {
         <>
           <div className=" bg-teal-900 p-5 rounded-lg mb-5">
             <h1 className="text-xl font-bold">Profile Info:</h1>
+            <p>
+              Rider type: <strong>{data?.riderType}</strong>
+            </p>
             <p className="text-lg">{data?.name}</p>
             <p>{data?.email}</p>
           </div>

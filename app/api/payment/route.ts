@@ -1,5 +1,3 @@
-import { mailOptions, transporter } from "@/app/config/nodemailer";
-import prisma from "@/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../pages/api/auth/[...nextauth]";
@@ -9,7 +7,11 @@ export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return new NextResponse("Login", { status: 401 });
+    return new NextResponse("Login to perform this action.", { status: 401 });
+  }
+
+  if (session.user.riderType === "PRO") {
+    return new NextResponse("Your already a PRO user.", { status: 409 });
   }
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -40,10 +42,11 @@ export async function GET(request: Request) {
         metadata: {
           userId: session.user.id,
           userName: session.user.name,
+          userEmail: session.user.email,
         },
       },
     });
-    console.log(stripeSession);
+
     return NextResponse.json(stripeSession);
   } catch (error: any) {
     return new NextResponse(

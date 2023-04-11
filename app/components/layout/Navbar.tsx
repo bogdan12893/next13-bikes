@@ -42,7 +42,7 @@ export default function Navbar({ session }) {
           )}
         </div>
       </nav>
-      <UpgradeBanner />
+      {!session || (session?.user?.riderType !== "PRO" && <UpgradeBanner />)}
     </>
   );
 }

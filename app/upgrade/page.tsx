@@ -1,6 +1,7 @@
 "use client";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 import React, { useState } from "react";
 
@@ -9,10 +10,15 @@ export default function UpgradeAccountPage() {
 
   const processPayment = async () => {
     setIsDisabled(true);
-    const stripe = await loadStripe(process.env.STRIPE_PUBLIC_KEY);
-    const { data } = await axios.get(`/api/payment`);
-    await stripe?.redirectToCheckout({ sessionId: data.id });
-    setIsDisabled(false);
+    try {
+      const stripe = await loadStripe(process.env.STRIPE_PUBLIC_KEY);
+      const { data } = await axios.get(`/api/payment`);
+      await stripe?.redirectToCheckout({ sessionId: data.id });
+    } catch (error: any) {
+      toast.error(error?.response?.data);
+    } finally {
+      setIsDisabled(false);
+    }
   };
 
   return (
